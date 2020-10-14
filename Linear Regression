@@ -1,0 +1,93 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Importing the dataset
+dataset = pd.read_csv('https://raw.githubusercontent.com/TheCodingRecruiter/Machine-Learning-Salary-Prediction-Model/master/Salary_Data.csv')
+X = dataset.iloc[:, :-1].values
+Y = dataset.iloc[:, 1].values        #Dependent Variable/Target Values
+dataset
+
+o/p....
+
+YearsExperience	Salary
+0	1.1	39343.0
+1	1.3	46205.0
+2	1.5	37731.0
+3	2.0	43525.0
+4	2.2	39891.0
+5	2.9	56642.0
+6	3.0	60150.0
+7	3.2	54445.0
+8	3.2	64445.0
+9	3.7	57189.0
+10	3.9	63218.0
+11	4.0	55794.0
+12	4.0	56957.0
+13	4.1	57081.0
+14	4.5	61111.0
+15	4.9	67938.0
+16	5.1	66029.0
+17	5.3	83088.0
+18	5.9	81363.0
+19	6.0	93940.0
+20	6.8	91738.0
+21	7.1	98273.0
+22	7.9	101302.0
+23	8.2	113812.0
+24	8.7	109431.0
+25	9.0	105582.0
+26	9.5	116969.0
+27	9.6	112635.0
+28	10.3	122391.0
+29	10.5	121872.0
+
+# Splitting the Dataset into Training Set and Test Set
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.33, random_state = 0)
+Y_train
+array([ 56642.,  66029.,  64445.,  61111., 113812.,  91738.,  46205.,
+       121872.,  60150.,  39891.,  81363.,  93940.,  57189.,  54445.,
+       105582.,  43525.,  39343.,  98273.,  67938.,  56957.])
+regressor = LinearRegression()
+regressor.fit(X_train, Y_train)
+LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)
+
+# Predicting the Test Set Results
+
+y_pred = regressor.predict(X_test)
+y_pred
+
+o/p....
+
+array([ 40835.10590871, 123079.39940819,  65134.55626083,  63265.36777221,
+       115602.64545369, 108125.8914992 , 116537.23969801,  64199.96201652,
+        76349.68719258, 100649.1375447 ])
+        
+Z_train = regressor.predict(X_train)
+Z_train
+
+o/p....
+
+array([ 53919.42532909,  74480.49870396,  56723.20806202,  68872.93323808,
+       103452.92027763,  90368.60085726,  38965.91742009, 124948.58789682,
+        54854.0195734 ,  47377.2656189 ,  81957.25265845,  82891.84690277,
+        61396.17928358,  56723.20806202, 110929.67423213,  45508.07713028,
+        37096.72893147,  93172.3835902 ,  72611.31021533,  64199.96201652])
+        
+# Visualizing the Training Set Results
+plt.scatter(X_train, Y_train, color = 'red')
+plt.plot(X_train, Z_train, color = 'green')
+plt.title('Salary Vs Experience (Training Set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+
+# Visualizing the Test Set Results
+plt.scatter(X_test, Y_test, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Salary Vs Experience (Test Set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
